@@ -17,6 +17,8 @@ import { loginSchema } from "../../types/loginschema";
 import { LoginUser } from "../../EndPoints/auth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/Slices/UserSlice";
 const Login = () => {
   const navigate = useNavigate();
   const form = useForm({
@@ -28,11 +30,12 @@ const Login = () => {
   });
 
   const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const loginOnsubmit = async (values) => {
     try {
       setLoading(true);
       const response = await LoginUser(values);
+      console.log(response.loginUser);
 
       if (response.isunVerified) {
         toast.error(response.message);
@@ -40,6 +43,8 @@ const Login = () => {
       } else if (response.isSuccess) {
         form.reset();
         toast.success(response.message);
+        localStorage.setItem("token", response.token);
+        dispatch(setUser(response.loginUser));
         navigate("/");
       } else {
         toast.error(response.message);
