@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../../../lib/components/ui/button";
+import { Button } from "../../../@/components/ui/button";
 import { IoIosReturnLeft } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 const Error = () => {

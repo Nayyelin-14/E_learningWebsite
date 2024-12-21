@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../components/Images/Logo2.png";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Avatar,
   AvatarFallback,
@@ -14,8 +14,13 @@ import {
   DropdownMenuTrigger,
 } from "../../@/components/ui/dropdown-menu";
 import { LogOutIcon, User2Icon } from "lucide-react";
+import { setUser } from "../store/Slices/UserSlice";
+import { toast } from "sonner";
+
 const Navigation = () => {
-  const [isactive, setIsactive] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const menuItems = [
     {
       link: "/",
@@ -31,71 +36,99 @@ const Navigation = () => {
     },
   ];
   const { user } = useSelector((state) => state.user);
-  console.log(user);
+
+  const logout = () => {
+    dispatch(setUser(null));
+    localStorage.removeItem("persist:root");
+    localStorage.removeItem("token");
+    navigate("/auth/login");
+    toast.warning("Your account has logged out");
+  };
+
   return (
-    <div className="flex items-center justify-between max-w-7xl h-24 mx-auto">
-      <div>
-        <img src={Logo} alt="" />
+    <div className="flex items-center justify-between max-w-7xl h-24 mx-auto px-4 md:px-8">
+      {/* Logo */}
+      <div className="flex items-center">
+        <img src={Logo} alt="Logo" className="h-10 md:h-12" />
       </div>
 
-      <div className="flex items-center justify-between gap-36">
-        {menuItems &&
-          menuItems.map((item) => (
-            <div className="h-10 w-24 text-center" key={item.link}>
-              <Link
-                to={item.link}
-                className={`text-[20px] hover:text-yellow-400 ${
-                  window.location.pathname === item.link && "text-yellow-400"
-                } `}
-              >
-                {item.label}
-              </Link>
-              {window.location.pathname === item.link && (
-                <hr className="h-1 bg-yellow-400 mt-5 w-24" />
-              )}
-            </div>
-          ))}
+      {/* Menu Toggle Button for Mobile */}
+      <div>
+        <button
+          className="block md:hidden text-2xl"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          ☰
+        </button>
+
+        {/* Menu Items */}
+        <div
+          className={`${
+            isMenuOpen ? "block" : "hidden"
+          } absolute top-20 left-0 w-full bg-white md:bg-transparent md:static md:flex md:items-center md:gap-12`}
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:gap-12 w-full md:w-auto">
+            {menuItems.map((item) => (
+              <div className="h-10 w-full md:w-24 text-center" key={item.link}>
+                <Link
+                  to={item.link}
+                  className={`block py-2 text-lg hover:text-yellow-400 ${
+                    window.location.pathname === item.link && "text-yellow-400"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+                {window.location.pathname === item.link && (
+                  <hr className="h-1 bg-yellow-400 mt-1 w-24 hidden md:block" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Avatar className="cursor-pointer">
-              <AvatarImage src={user.user_profileImage} />
-              <AvatarFallback>
-                {user.user_name.slice(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="my-3 p-3 ">
-            <div className="flex gap-3 p-3 border-2 border-black/20  rounded-lg items-center cursor-pointer hover:scale-95 transition-all duration-300 ease-in-out">
+      {/* User Avatar and Dropdown */}
+      {user && (
+        <div className="hidden md:block">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
               <Avatar className="cursor-pointer">
                 <AvatarImage src={user.user_profileImage} />
                 <AvatarFallback>
                   {user.user_name.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <p className="font-bold text-sm">{user.user_name}</p>
-                <p className="font-medium text-sm">{user.user_email}</p>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="my-3 p-3">
+              <div className="flex gap-3 p-3 border-2 border-black/20 rounded-lg items-center cursor-pointer hover:scale-95 transition-all duration-300 ease-in-out">
+                <Avatar>
+                  <AvatarImage src={user.user_profileImage} />
+                  <AvatarFallback>
+                    {user.user_name.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-bold text-sm">{user.user_name}</p>
+                  <p className="font-medium text-sm">{user.user_email}</p>
+                </div>
               </div>
-            </div>
-            <DropdownMenuItem className="cursor-pointer group h-12 mt-2 hover:bg-black/20 ">
-              <User2Icon className="w-5 h-5 mr-3 group-hover:translate-x-1 group-hover:text-blue-600 transition-all duration-00 ease-in-out" />
-              <span className="text-sm font-bold">My profile</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer  h-12 group " // Ensure valid color class
-            >
-              <LogOutIcon className="w-5 h-5 mr-3 group-hover:translate-x-1 group-hover:text-red-600 group-hover:scale-90 transition-all duration-300 ease-in-out " />
-              <span className="text-sm font-medium group-hover:text-red-600 transition-all duration-300 ease-in-out">
-                Log out
-              </span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+              <DropdownMenuItem className="cursor-pointer group h-12 mt-2 hover:bg-black/20">
+                <User2Icon className="w-5 h-5 mr-3 group-hover:translate-x-1 group-hover:text-blue-600 transition-all duration-300 ease-in-out" />
+                <span className="text-sm font-bold">My profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer h-12 group"
+                onClick={logout}
+              >
+                <LogOutIcon className="w-5 h-5 mr-3 group-hover:translate-x-1 group-hover:text-red-600 group-hover:scale-90 transition-all duration-300 ease-in-out" />
+                <span className="text-sm font-medium group-hover:text-red-600 transition-all duration-300 ease-in-out">
+                  Log out
+                </span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
     </div>
   );
 };

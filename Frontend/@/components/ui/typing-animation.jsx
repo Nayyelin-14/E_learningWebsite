@@ -1,4 +1,4 @@
-import { cn } from "../../../lib/utils";
+import { cn } from "./lib/utils";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { motion } from "framer-motion";
@@ -12,7 +12,7 @@ export default function TypingAnimation({
   startOnView = false,
   ...props
 }) {
-  const MotionComponent = motion(Component, {
+  const MotionComponent = motion.create(Component, {
     forwardMotionProps: true,
   });
 

@@ -1,5 +1,5 @@
 const { eq } = require("drizzle-orm");
-const { users, emailVerification } = require("../db/schema");
+const { users, emailVerification } = require("../db");
 
 const crypto = require("crypto");
 

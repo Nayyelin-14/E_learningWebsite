@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 const db = require("../db/db");
-const { users, emailVerification } = require("../db/schema");
+const { users, emailVerification } = require("../db");
 const { eq } = require("drizzle-orm");
 const {
   create_verificationToken,
@@ -243,6 +243,35 @@ exports.LoginUser = async (req, res) => {
     return res.status(500).json({
       isSuccess: false,
       message: error.message,
+    });
+  }
+};
+
+exports.checkUser = async (req, res) => {
+  const { userID } = req;
+
+  try {
+    const userDoc = await db
+      .select()
+      .from(users)
+      .where(eq(users.user_id, userID));
+    if (!userDoc) {
+      return res.status(400).json({
+        isSuccess: false,
+        message: "Unauthorized user!!!",
+      });
+      // throw new Error("Unauthorized user!!!");
+    }
+
+    return res.status(200).json({
+      isSuccess: true,
+      message: "Authorized User",
+      LoginUser: userDoc,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      isSuccess: false,
+      message: error,
     });
   }
 };

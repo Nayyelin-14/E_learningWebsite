@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { VerifyEmail } from "../../../EndPoints/auth";
-import { Button } from "../../../../lib/components/ui/button";
-import { Card } from "../../../../lib/components/ui/card";
+import { Button } from "../../../../@/components/ui/button";
+import { Card } from "../../../../@/components/ui/card";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { IoIosReturnLeft } from "react-icons/io";
 import DoiTung from "./DoiTung.png";

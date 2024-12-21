@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-} from "../../../../lib/components/ui/card";
+} from "../../../../@/components/ui/card";
 import Providerlogin from "./Providerlogin";
 import AuthHeader from "./AuthHeader";
 import { Link } from "react-router-dom";

@@ -9,6 +9,7 @@ import EmailVerification from "./components/AuthService/EmailService/EmailVerifi
 import VerificationPage from "./components/AuthService/VerificationPage";
 import Forgotpassword from "./components/AuthService/Password/Forgotpassword";
 import ErrorPage from "./Pages/ErrorPage";
+import AuthProvider from "./providers/AuthProvider";
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -17,7 +18,11 @@ const App = () => {
       children: [
         {
           index: true,
-          element: <Home />,
+          element: (
+            // <AuthProvider>
+            <Home />
+            // </AuthProvider>
+          ),
         },
         {
           path: "/auth/register",

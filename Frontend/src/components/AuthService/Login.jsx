@@ -9,10 +9,10 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../../../lib/components/ui/form";
-import { Input } from "../../../lib/components/ui/input";
-import { Button } from "../../../lib/components/ui/button";
-import { cn } from "../../../lib/utils";
+} from "../../../@/components/ui/form";
+import { Input } from "../../../@/components/ui/input";
+import { Button } from "../../../@/components/ui/button";
+import { cn } from "../../../@/components/ui/lib/utils";
 import { loginSchema } from "../../types/loginschema";
 import { LoginUser } from "../../EndPoints/auth";
 import { toast } from "sonner";
@@ -43,6 +43,7 @@ const Login = () => {
       } else if (response.isSuccess) {
         form.reset();
         toast.success(response.message);
+        console.log(response);
         localStorage.setItem("token", response.token);
         dispatch(setUser(response.loginUser));
         navigate("/");

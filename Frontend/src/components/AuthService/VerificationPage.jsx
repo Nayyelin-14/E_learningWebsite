@@ -4,9 +4,9 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from "../../../lib/components/ui/card";
+} from "../../../@/components/ui/card";
 import verify from "../Images/verify.jpg";
-import { Button } from "../../../lib/components/ui/button";
+import { Button } from "../../../@/components/ui/button";
 
 const VerificationPage = () => {
   const [isloading, setIsloading] = useState(false);

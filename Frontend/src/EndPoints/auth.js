@@ -16,7 +16,7 @@ export const LoginUser = async (payload) => {
 
   try {
     const response = await axiosInstance.post("/auth/login", payload);
-    console.log(response.data);
+    console.log(response);
     return response.data;
   } catch (error) {
     return error.response.data;
@@ -33,5 +33,16 @@ export const VerifyEmail = async (token) => {
     return response.data;
   } catch (error) {
     return error.response.data;
+  }
+};
+
+export const CheckUser = async () => {
+  try {
+    const response = await axiosInstance.get("/auth/getCurrentUser");
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    return err.response.data;
   }
 };

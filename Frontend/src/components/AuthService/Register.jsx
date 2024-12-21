@@ -9,10 +9,10 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../../../lib/components/ui/form";
-import { Input } from "../../../lib/components/ui/input";
-import { Button } from "../../../lib/components/ui/button";
-import { cn } from "../../../lib/utils";
+} from "../../../@/components/ui/form";
+import { Input } from "../../../@/components/ui/input";
+import { Button } from "../../../@/components/ui/button";
+// import { cn } from "../../../lib/utils";
 import { registerUser } from "../../EndPoints/auth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";

@@ -1,25 +1,24 @@
 const jwt = require("jsonwebtoken");
-
 const authMiddleware = async (req, res, next) => {
   try {
-    const BearerToken = req.headers["authorization"]; // success yin   //create token if login success
-    // const JWT_token = jwt.sign({ userId: Loginuser._id }, process.env.JWT_KEY, {
-    //   expiresIn: "1d",
-    // }); controller mhr token create htr tr nk tu tu pl
-
-    // console.log("login token", BearerToken);
-    const JWT_formatToken = BearerToken.split(" ")[1];
-    // console.log("formatted JWT", JWT_formatToken);
-    if (!JWT_formatToken) {
-      throw new Error("Unauthorized Login");
+    const BearerToken = req.headers["authorization"]; // Extract Bearer token
+    if (!BearerToken) {
+      throw new Error("An unexpected error occurred");
     }
 
-    const LoginToken = jwt.verify(JWT_formatToken, process.env.JWT_KEY);
-    // console.log("user", LoginToken);
-    req.userID = LoginToken.userId;
-    // console.log(req.userID);
-    // console.log(req);
-    next();
+    const JWT_formatToken = BearerToken.split(" ")[1]; // Format token
+    if (!JWT_formatToken) {
+      throw new Error("Unauthorized!!! Please Try Again");
+    }
+
+    const LoginToken = jwt.verify(JWT_formatToken, process.env.JWT_KEY); // Verify token
+
+    if (!LoginToken) {
+      throw new Error("Something went wrong");
+    }
+    req.userID = LoginToken.userId; // Attach userId to request object
+
+    next(); // Pass control to the next middleware/controller
   } catch (err) {
     return res.status(401).json({
       isSuccess: false,
@@ -27,6 +26,5 @@ const authMiddleware = async (req, res, next) => {
     });
   }
 };
-//client ka lr tk req ka token ko u
 
 module.exports = authMiddleware;

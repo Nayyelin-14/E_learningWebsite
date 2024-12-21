@@ -2,7 +2,7 @@ import React from "react";
 
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
-import { Button } from "../../../../lib/components/ui/button";
+import { Button } from "../../../../@/components/ui/button";
 // import { signIn } from "next-auth/react";
 const Providerlogin = () => {
   return (

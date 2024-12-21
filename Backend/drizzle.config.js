@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export default defineConfig({
-  schema: "./db/schema.js", // Path to your schema files
+  schema: "./db/index.js", // Path to your schema files
   out: "./Server/migration",
   dialect: "mysql",
   dbCredentials: {

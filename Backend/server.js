@@ -8,7 +8,7 @@ const morgan = require("morgan");
 const { db } = require("./db/db");
 
 const authRoutes = require("./Routes/auth");
-
+const courseRoutes = require("./Routes/course");
 dotenv.config();
 
 const app = express();
@@ -19,6 +19,7 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/auth", authRoutes);
+app.use(courseRoutes);
 // Initialize Drizzle and start the server
 
 app.listen(PORT, () => {
